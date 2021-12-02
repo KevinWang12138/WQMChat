@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WQMChat</string>
+    <string name="title_home">聊天</string>
+    <string name="title_dashboard">当前在线</string>
+    <string name="title_notifications">更多</string>
+
+</resources>
