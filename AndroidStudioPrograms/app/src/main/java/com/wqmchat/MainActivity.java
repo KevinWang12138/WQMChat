@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         //在MainActivity创建的时候就开始创建
-        port=4005;
+        port=4000;
         TextView tv=getLayoutInflater().inflate(R.layout.fragment_home, null).findViewById(R.id.textView);
         ListView lv=getLayoutInflater().inflate(R.layout.fragment_dashboard, null).findViewById(R.id.list1);
         Context c=getLayoutInflater().inflate(R.layout.fragment_dashboard, null).getContext();
