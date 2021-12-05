@@ -92,8 +92,14 @@ public class HomeFragment extends Fragment {
                         }
                     });
                     dialog.show();
-                }else{
-                    binding.textView.setText("");
+                }else if(title.equals("对方向您传输了一个文件")){
+                    dialog.setTitle(title);
+                    dialog.setPositiveButton("确认",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    dialog.show();
                 }
 
             }

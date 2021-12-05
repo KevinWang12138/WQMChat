@@ -10,6 +10,8 @@ import com.wqmchat.ui.dashboard.DashboardFragment;
 import com.wqmchat.ui.home.HomeFragment;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 
 
 public class ClientReadThread implements Runnable{
@@ -34,6 +36,7 @@ public class ClientReadThread implements Runnable{
             try {
                 inTemp = socketIn.readLine();
                 if(inTemp==null){
+                    Thread.sleep(5000);
                     Message msg = new Message();
                     msg.what = 0;
                     Bundle data = new Bundle();
@@ -123,10 +126,31 @@ public class ClientReadThread implements Runnable{
                         }
                         DashboardFragment.viewUI(ports,c);
                         continue;
+                    }else if(inTemp.length()==11){
+                        if(inTemp.substring(5).equals("开始传输文件")){
+                            Thread.sleep(400);
+                            System.out.println("系统提示，开始接收文件...");
+                            byte ipAddressTemp[] = {117,78,1,7};//117,78,1,7//127,0,0,1
+                            InetAddress ipAddress = InetAddress.getByAddress(ipAddressTemp);
+                            Socket filesocket = new Socket(ipAddress, myselfTotalThread.socket.getPort()+10);//和服务器进行连接
+
+                            FileReadThread fileReadThread=new FileReadThread(filesocket);
+                            Thread t=new Thread(fileReadThread);
+                            t.start();
+                            while(true){
+                                if(!fileReadThread.over){
+                                    Thread.sleep(100);
+                                }else{
+                                    break;
+                                }
+                            }
+                            System.out.println("系统提示，接收文件完成");
+                            continue;
+                        }
                     }
                 }
                 HomeFragment.viewUI(inTemp);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
                 break;
             }

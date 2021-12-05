@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public TextView tv;
     public ListView lv;
     public Context c;
+    public boolean isFileing;
     public boolean HasChosenTargetClient;//用来标识是否已经选中了聊天对象，如果没有选中，不许交流
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,6 +20,7 @@ public class ClientWriteThread implements Runnable{
     public void run() {
         PrintWriter socketOut = null;//将本地文字输出到服务器的流
         try {
+            System.out.println("123123");
             socketOut = new PrintWriter(socket.getOutputStream());
             socketOut.println(socket.getPort()+":"+inTemp);
             socketOut.flush();

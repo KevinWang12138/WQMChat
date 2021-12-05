@@ -3,8 +3,10 @@ package com.wqmchat.ui.notifications;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -72,13 +74,24 @@ public class NotificationsFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, 0);
+                MainActivity mainActivity=(MainActivity) getActivity();
+                if(mainActivity.HasChosenTargetClient){
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, 0);
+                }else{
+                    AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
+                    dialog.setTitle("请先在当前在线界面选择一位用户进行连接");
+                    dialog.setPositiveButton("确认",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
-
-
         return root;
     }
     String path;
@@ -103,6 +116,7 @@ public class NotificationsFragment extends Fragment {
                 path = getRealPathFromURI(uri);
             }
         }
+        mainActivity.isFileing=true;
         /**
          * 得到path以后进行文件传输
          */
@@ -127,8 +141,6 @@ public class NotificationsFragment extends Fragment {
         FileMainThread fileMainThread=new FileMainThread(path,mainActivity.port+10);
         Thread t2=new Thread(fileMainThread);
         t2.start();
-
-
     }
 
     public String getRealPathFromURI(Uri contentUri) {
